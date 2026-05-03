@@ -1,0 +1,19 @@
+// ─── Loan Routes ─────────────────────────────────────────────
+// TODO (Phase 2 — Dev A): Implement all loan endpoints
+// POST   /api/loans                         — borrower creates loan request
+// GET    /api/loans                         — list open loans (marketplace)
+// GET    /api/loans/:id                     — get single loan
+// PATCH  /api/loans/:id/status              — internal: update loan status
+// POST   /api/loans/:id/bids                — lender places a bid
+// GET    /api/loans/:id/bids                — list bids on a loan
+// PATCH  /api/loans/:id/bids/:bidId         — borrower accepts/rejects a bid
+// POST   /api/loans/:id/repay               — borrower makes a repayment
+
+const express = require('express');
+const router = express.Router();
+
+router.all('*', (req, res) => {
+  res.status(501).json({ message: 'Loan routes not implemented yet — Phase 2 task for Dev A.' });
+});
+
+module.exports = router;
