@@ -194,9 +194,9 @@ Copy `.env.example` to `server/.env` and fill in all values. **Never commit `.en
 - [x] All 5 Mongoose schemas in `server/models/index.js`
 - [x] Client scaffold: Vite + React + Tailwind + `AuthContext.jsx`
 - [x] GitHub Actions CI workflow (`.github/workflows/ci.yml`)
-- [ ] **Dev A:** MongoDB Atlas cluster created, `MONGO_URI` shared via .env
-- [ ] **Dev C:** Stripe test account created, keys shared via .env
-- [ ] **Everyone:** Clone repo, run locally, confirm health check works
+- [x] **Dev A:** MongoDB Atlas cluster created, `MONGO_URI` shared via .env
+- [x] **Dev C:** Stripe test account created, keys shared via .env
+- [x] **Everyone:** Clone repo, run locally, confirm health check works
 
 ### Phase 1 — Auth & Stripe Onboarding (Weeks 2–3)
 - [ ] Dev A: `/api/auth/register`, `/api/auth/login`, JWT middleware
