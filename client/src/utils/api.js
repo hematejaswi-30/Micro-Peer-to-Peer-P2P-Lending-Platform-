@@ -32,3 +32,8 @@ api.interceptors.response.use(
     return Promise.reject(new Error(message));
   }
 );
+// Load token from localStorage on startup
+const token = localStorage.getItem("token");
+if (token) {
+  api.setToken(token);
+}
