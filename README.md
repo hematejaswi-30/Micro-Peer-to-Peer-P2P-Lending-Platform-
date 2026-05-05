@@ -202,7 +202,7 @@ Copy `.env.example` to `server/.env` and fill in all values. **Never commit `.en
 - [ ] Dev A: `/api/auth/register`, `/api/auth/login`, JWT middleware
 - [ ] Dev A: Role-based access middleware (`requireRole`)
 - [ ] Dev B: `AuthContext` actions implemented, Login + Register pages
-- [ ] Dev C: Stripe Express Connected Account creation, onboarding link endpoint
+- [x] Dev C: Stripe Express Connected Account creation, onboarding link endpoint
 
 ### Phase 2 — Loan Lifecycle & Funding (Weeks 3–5)
 - [ ] Dev A: Loan CRUD, Bid API, loan matching, ACID transaction on funding

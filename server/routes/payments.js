@@ -1,14 +1,22 @@
-// ─── Payment Routes ──────────────────────────────────────────
-// TODO (Phase 2 — Dev C): Implement Stripe payment endpoints
-// POST /api/payments/create-intent     — create PaymentIntent for loan funding
-// POST /api/payments/create-account    — create Stripe Express connected account (lender)
-// GET  /api/payments/account-link      — get onboarding URL for lender
-
 const express = require('express');
 const router = express.Router();
+const paymentController = require('../controllers/paymentController');
+const { verifyToken, requireRole } = require('../middleware/auth');
 
-router.all('*', (req, res) => {
-  res.status(501).json({ message: 'Payment routes not implemented yet — Phase 2 task for Dev C.' });
-});
+// All payment routes require authentication
+router.use(verifyToken);
+
+/**
+ * @route   POST /api/payments/create-account
+ * @desc    Create a Stripe Express connected account (lender only)
+ */
+router.post('/create-account', requireRole('lender'), paymentController.createAccount);
+
+/**
+ * @route   GET /api/payments/account-link
+ * @desc    Get onboarding URL for lender
+ */
+router.get('/account-link', requireRole('lender'), paymentController.getOnboardingLink);
 
 module.exports = router;
+
