@@ -14,9 +14,10 @@
 
 const express = require('express');
 const router = express.Router();
+const webhookController = require('../controllers/webhookController');
 
-router.all('*', (req, res) => {
-  res.status(501).json({ message: 'Webhook handler not implemented yet — Phase 2 task for Dev C.' });
-});
+// Stripe requires the raw body to verify the signature
+// This is already handled in server/index.js with express.raw()
+router.post('/stripe', webhookController.handleStripeWebhook);
 
 module.exports = router;

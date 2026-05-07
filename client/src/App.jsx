@@ -5,6 +5,8 @@ import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Marketplace from './pages/Marketplace';
+import CreateLoan from './pages/CreateLoan';
 
 // ✅ Protected route
 import ProtectedRoute from './components/ProtectedRoute';
@@ -15,7 +17,7 @@ function ComingSoon({ page }) {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="card text-center max-w-sm">
         <h2 className="mb-2">{page}</h2>
-        <p className="text-sm text-gray-500">Phase 1 — Assigned to Dev B</p>
+        <p className="text-sm text-gray-500">Phase 3 — Repayments</p>
       </div>
     </div>
   );
@@ -34,12 +36,30 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* 🔐 Protected Route */}
+          {/* 🔐 Protected Routes */}
           <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/marketplace"
+            element={
+              <ProtectedRoute>
+                <Marketplace />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/create-loan"
+            element={
+              <ProtectedRoute>
+                <CreateLoan />
               </ProtectedRoute>
             }
           />
