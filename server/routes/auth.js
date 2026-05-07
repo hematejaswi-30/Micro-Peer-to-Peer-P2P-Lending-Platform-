@@ -6,10 +6,11 @@
 
 const express = require('express');
 const router = express.Router();
+const userController = require('../controllers/userController');
+const authMiddleware = require('../middleware/auth');
 
-// Placeholder — remove this block when Dev A implements the controllers
-router.all('*', (req, res) => {
-  res.status(501).json({ message: 'Auth routes not implemented yet — Phase 1 task for Dev A.' });
-});
+router.post('/register', userController.register);
+router.post('/login', userController.login);
+router.get('/me', authMiddleware.protect, userController.getMe);
 
 module.exports = router;

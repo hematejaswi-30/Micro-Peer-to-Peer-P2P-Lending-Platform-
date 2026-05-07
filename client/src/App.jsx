@@ -1,21 +1,23 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 
-// Pages — to be built out in Phase 1 & 2 (Dev B)
-// import Login         from './pages/Login';
-// import Register      from './pages/Register';
-// import BorrowerDash  from './pages/BorrowerDashboard';
-// import LenderDash    from './pages/LenderDashboard';
-// import Marketplace   from './pages/Marketplace';
-// import LoanDetail    from './pages/LoanDetail';
+// ✅ Import your actual pages
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import Marketplace from './pages/Marketplace';
+import CreateLoan from './pages/CreateLoan';
 
-// Placeholder page until Dev B builds real pages
+// ✅ Protected route
+import ProtectedRoute from './components/ProtectedRoute';
+
+// Placeholder (keep for future pages)
 function ComingSoon({ page }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="card text-center max-w-sm">
         <h2 className="mb-2">{page}</h2>
-        <p className="text-sm text-gray-500">Phase 1 — Assigned to Dev B</p>
+        <p className="text-sm text-gray-500">Phase 3 — Repayments</p>
       </div>
     </div>
   );
@@ -26,12 +28,48 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path="/"          element={<ComingSoon page="Home / Marketplace" />} />
-          <Route path="/login"     element={<ComingSoon page="Login" />} />
-          <Route path="/register"  element={<ComingSoon page="Register" />} />
-          <Route path="/dashboard" element={<ComingSoon page="Dashboard" />} />
+
+          {/* 🔁 Default route */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+
+          {/* 🌐 Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* 🔐 Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/marketplace"
+            element={
+              <ProtectedRoute>
+                <Marketplace />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/create-loan"
+            element={
+              <ProtectedRoute>
+                <CreateLoan />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* 🚧 Future Pages */}
           <Route path="/loans/:id" element={<ComingSoon page="Loan Detail" />} />
-          <Route path="*"          element={<Navigate to="/" replace />} />
+
+          {/* ❌ Fallback */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
+
         </Routes>
       </AuthProvider>
     </BrowserRouter>

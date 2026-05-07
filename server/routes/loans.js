@@ -11,9 +11,26 @@
 
 const express = require('express');
 const router = express.Router();
+const loanController = require('../controllers/loanController');
+const bidController = require('../controllers/bidController');
+const authMiddleware = require('../middleware/auth');
 
-router.all('*', (req, res) => {
-  res.status(501).json({ message: 'Loan routes not implemented yet — Phase 2 task for Dev A.' });
-});
+// 🌐 Public routes
+router.get('/', loanController.getAllLoans);
+router.get('/:id', loanController.getLoanById);
+
+// 🔐 Protected routes
+router.use(authMiddleware.protect);
+
+// My Dashboard data
+router.get('/my/all', loanController.getMyLoans);
+
+// Borrower actions
+router.post('/', authMiddleware.restrictTo('borrower'), loanController.createLoan);
+router.patch('/:loanId/bids/:bidId', authMiddleware.restrictTo('borrower'), bidController.acceptBid);
+
+// Lender actions
+router.post('/:loanId/bids', authMiddleware.restrictTo('lender'), bidController.placeBid);
+router.get('/:loanId/bids', bidController.getLoanBids);
 
 module.exports = router;
