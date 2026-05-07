@@ -22,12 +22,13 @@ exports.handleStripeWebhook = async (req, res) => {
 
   // Handle the event
   switch (event.type) {
-    case 'payment_intent.succeeded':
+    case 'payment_intent.succeeded': {
       const paymentIntent = event.data.object;
       if (paymentIntent.metadata.type === 'loan_funding') {
         await handleLoanFunding(paymentIntent);
       }
       break;
+    }
     
     // Add other cases as needed (e.g., payment_intent.payment_failed)
     

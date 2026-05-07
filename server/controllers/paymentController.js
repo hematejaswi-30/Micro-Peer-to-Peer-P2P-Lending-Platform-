@@ -1,5 +1,5 @@
 const stripe = require('../config/stripe');
-const { User } = require('../models');
+const { User, Loan } = require('../models');
 
 /**
  * Create Stripe Express Account
