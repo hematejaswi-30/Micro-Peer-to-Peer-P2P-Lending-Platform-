@@ -1,41 +1,56 @@
-// ─── Auth Middleware ────────────────────────────────────────
-// TODO (Phase 1 — Dev A): Implement JWT verification
-// This file is scaffolded by Lead so Dev A knows the expected signature.
-
 const jwt = require('jsonwebtoken');
+const { User } = require('../models');
 
 /**
- * Verifies the JWT from the Authorization header.
- * On success, attaches decoded user payload to req.user.
- * Usage: router.get('/protected', verifyToken, controller)
+ * Protect routes - only authenticated users
  */
-const verifyToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Access denied. No token provided.' });
-  }
-
-  const token = authHeader.split(' ')[1];
-
+exports.protect = async (req, res, next) => {
   try {
+    let token;
+
+    // 1) Get token from header
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith('Bearer')
+    ) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
+    if (!token) {
+      return res.status(401).json({
+        error: 'You are not logged in. Please log in to get access.'
+      });
+    }
+
+    // 2) Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+
+    // 3) Check if user still exists
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) {
+      return res.status(401).json({
+        error: 'The user belonging to this token no longer exists.'
+      });
+    }
+
+    // 4) Grant access to protected route
+    req.user = currentUser;
     next();
   } catch (err) {
-    return res.status(401).json({ error: 'Invalid or expired token.' });
+    res.status(401).json({ error: 'Invalid token or session expired.' });
   }
 };
 
 /**
- * Role guard — use AFTER verifyToken.
- * Usage: router.post('/loans', verifyToken, requireRole('borrower'), controller)
+ * Restrict routes to specific roles (e.g. 'lender', 'borrower')
  */
-const requireRole = (...roles) => (req, res, next) => {
-  if (!req.user || !roles.includes(req.user.role)) {
-    return res.status(403).json({ error: 'Access forbidden. Insufficient permissions.' });
-  }
-  next();
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        error: 'You do not have permission to perform this action'
+      });
+    }
+    next();
+  };
 };
-
-module.exports = { verifyToken, requireRole };
