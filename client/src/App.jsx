@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Repayments from './pages/Repayments';
 import Marketplace from './pages/Marketplace';
 import CreateLoan from './pages/CreateLoan';
 
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
+
           {/* 🔐 Protected Routes */}
           <Route
             path="/dashboard"
@@ -60,6 +62,15 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <CreateLoan />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/repayments"
+            element={
+              <ProtectedRoute>
+                <Repayments />
               </ProtectedRoute>
             }
           />

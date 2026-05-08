@@ -1,5 +1,5 @@
 const stripe = require('../config/stripe');
-const { Loan, Transaction } = require('../models');
+const { Loan, User, Transaction } = require('../models');
 const mongoose = require('mongoose');
 
 /**
@@ -21,26 +21,33 @@ exports.handleStripeWebhook = async (req, res) => {
   }
 
   // Handle the event
-  switch (event.type) {
-    case 'payment_intent.succeeded': {
-      const paymentIntent = event.data.object;
-      if (paymentIntent.metadata.type === 'loan_funding') {
-        await handleLoanFunding(paymentIntent);
-      }
-      break;
-    }
-    
-    // Add other cases as needed (e.g., payment_intent.payment_failed)
-    
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
+  try {
+    switch (event.type) {
+      case 'payment_intent.succeeded': {
+        const paymentIntent = event.data.object;
+        const type = paymentIntent.metadata?.type;
 
-  res.json({ received: true });
+        if (type === 'loan_funding') {
+          await handleLoanFunding(paymentIntent);
+        } else if (type === 'repayment') {
+          await handleLoanRepayment(paymentIntent);
+        }
+        break;
+      }
+      
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    res.json({ received: true });
+  } catch (err) {
+    console.error('❌ Error processing webhook event:', err.message);
+    res.status(500).json({ error: 'Internal server error processing webhook' });
+  }
 };
 
 /**
- * Logic for successful loan funding
+ * Logic for successful loan funding (Phase 2)
  */
 async function handleLoanFunding(paymentIntent) {
   const session = await mongoose.startSession();
@@ -74,7 +81,59 @@ async function handleLoanFunding(paymentIntent) {
     console.log(`✅ Loan ${loanId} successfully funded.`);
   } catch (err) {
     await session.abortTransaction();
-    console.error('❌ Error handling loan funding webhook:', err.message);
+    throw err;
+  } finally {
+    session.endSession();
+  }
+}
+
+/**
+ * Logic for successful repayment & payout to lender (Phase 3)
+ */
+async function handleLoanRepayment(paymentIntent) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const loanId = paymentIntent.metadata?.loanId;
+    if (!loanId) throw new Error('Loan ID missing in metadata');
+
+    const loan = await Loan.findById(loanId).populate('lender');
+    if (!loan || !loan.lender) throw new Error('Loan or lender not found');
+
+    const lender = loan.lender;
+    const repaymentAmount = paymentIntent.amount; // in cents
+
+    // Calculate platform fee (10%)
+    const platformFee = Math.floor(repaymentAmount * 0.10);
+    const lenderPayoutAmount = repaymentAmount - platformFee;
+
+    // 1) Transfer to lender
+    const transfer = await stripe.transfers.create({
+      amount: lenderPayoutAmount,
+      currency: 'inr',
+      destination: lender.stripeAccountId,
+    });
+
+    // 2) Save transaction record
+    await Transaction.create([{
+      loan: loan._id,
+      type: 'payout',
+      amount: lenderPayoutAmount / 100,
+      stripePaymentIntentId: paymentIntent.id,
+      stripeTransferId: transfer.id,
+      paidTo: lender._id,
+      status: 'completed',
+    }], { session });
+
+    // Note: In a full implementation, we would also update the RepaymentSchedule status here.
+    // For now, we commit the payout transaction.
+
+    await session.commitTransaction();
+    console.log('✅ Repayment received and transfer sent to lender');
+  } catch (err) {
+    await session.abortTransaction();
+    throw err;
   } finally {
     session.endSession();
   }

@@ -74,10 +74,16 @@ export default function Dashboard() {
           </Link>
 
           {user?.role === 'borrower' && (
-            <Link to="/create-loan" className="flex items-center px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition-all font-medium">
-              <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/></svg>
-              Apply for Loan
-            </Link>
+            <>
+              <Link to="/create-loan" className="flex items-center px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition-all font-medium">
+                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/></svg>
+                Apply for Loan
+              </Link>
+              <Link to="/repayments" className="flex items-center px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl transition-all font-medium">
+                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                My Repayments
+              </Link>
+            </>
           )}
         </nav>
 
@@ -106,7 +112,7 @@ export default function Dashboard() {
 
         <div className="p-8 space-y-8">
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
             <div className="bg-slate-900/50 border border-slate-800/50 p-6 rounded-2xl shadow-xl relative overflow-hidden group hover:border-indigo-500/30 transition-colors">
               <p className="text-slate-400 text-sm font-medium">Portfolio Value</p>
               <h3 className="text-3xl font-bold text-white mt-2">₹{stats.balance.toLocaleString()}</h3>
@@ -118,6 +124,16 @@ export default function Dashboard() {
             <div className="bg-slate-900/50 border border-slate-800/50 p-6 rounded-2xl shadow-xl relative overflow-hidden group hover:border-blue-500/30 transition-colors">
               <p className="text-slate-400 text-sm font-medium">Expected Returns</p>
               <h3 className="text-3xl font-bold text-white mt-2">₹{stats.pendingReturns.toLocaleString()}</h3>
+            </div>
+            {/* Total Earned Interest (Phase 3) */}
+            <div className="bg-slate-900/50 border border-slate-800/50 p-6 rounded-2xl shadow-xl relative overflow-hidden group hover:border-emerald-500/30 transition-colors">
+              <p className="text-slate-400 text-sm font-medium">Total Interest</p>
+              <h3 className="text-3xl font-bold text-white mt-2">₹0.00</h3>
+            </div>
+            {/* Next Payout Date (Phase 3) */}
+            <div className="bg-slate-900/50 border border-slate-800/50 p-6 rounded-2xl shadow-xl relative overflow-hidden group hover:border-pink-500/30 transition-colors">
+              <p className="text-slate-400 text-sm font-medium">Next Payout</p>
+              <h3 className="text-xl font-bold text-white mt-2">--</h3>
             </div>
           </div>
 
