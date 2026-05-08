@@ -112,8 +112,7 @@ npm run dev
 |--------|------|--------------|-------------|
 | **Lead (You)** | Architecture, schemas, GitHub, security reviews | Repo setup, data models, CI | All phases |
 | **Dev A** | Backend — Node/Express/MongoDB | Atlas cluster + Express scaffold | Phase 1, 2, 3 |
-| **Dev B** | Frontend — React/Tailwind/Context API | Vite + Tailwind scaffold | Phase 1, 2, 3 |
-| **Dev C** | Payments — Stripe Connect | Stripe test account setup | Phase 1, 2, 3 |
+| **Dev B (AI)** | Fullstack — Frontend & Payments | Vite + Tailwind scaffold | Phase 1, 2, 3 |
 
 **The Lead is the only person who merges into `main`.** All financial logic lives exclusively in the backend — no amount calculations or Stripe calls in the React code. This rule is enforced in every PR review.
 
@@ -202,7 +201,7 @@ Copy `.env.example` to `server/.env` and fill in all values. **Never commit `.en
 - [ ] Dev A: `/api/auth/register`, `/api/auth/login`, JWT middleware
 - [ ] Dev A: Role-based access middleware (`requireRole`)
 - [ ] Dev B: `AuthContext` actions implemented, Login + Register pages
-- [ ] Dev C: Stripe Express Connected Account creation, onboarding link endpoint
+- [x] Dev C: Stripe Express Connected Account creation, onboarding link endpoint
 
 ### Phase 2 — Loan Lifecycle & Funding (Weeks 3–5)
 - [ ] Dev A: Loan CRUD, Bid API, loan matching, ACID transaction on funding
@@ -212,7 +211,7 @@ Copy `.env.example` to `server/.env` and fill in all values. **Never commit `.en
 ### Phase 3 — Repayment & Payouts (Weeks 5–7)
 - [ ] Dev A: EMI calculator, Repayment API
 - [ ] Lead: Loan state machine (`loanService.js`)
-- [ ] Dev C: Stripe Transfer to lender, payout tracking
+- [ ] Dev B: Stripe Transfer to lender, payout tracking
 - [ ] Dev B: Repayment UI, Lender portfolio dashboard
 
 ### Phase 4 — Testing & Deployment (Weeks 7–8)
