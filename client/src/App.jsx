@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Repayments from './pages/Repayments';
 
 // ✅ Protected route
 import ProtectedRoute from './components/ProtectedRoute';
@@ -33,6 +34,7 @@ export default function App() {
           {/* 🌐 Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/repayments" element={<Repayments />} />
 
           {/* 🔐 Protected Route */}
           <Route
