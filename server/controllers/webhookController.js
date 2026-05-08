@@ -1,6 +1,7 @@
 const stripe = require('../config/stripe');
 const { Loan, User, Transaction } = require('../models');
 const mongoose = require('mongoose');
+const loanService = require('../services/loanService');
 
 /**
  * Stripe Webhook Handler
@@ -79,6 +80,9 @@ async function handleLoanFunding(paymentIntent) {
 
     await session.commitTransaction();
     console.log(`✅ Loan ${loanId} successfully funded.`);
+
+    // 3) Trigger state machine to generate EMI schedule
+    await loanService.finalizeFunding(loanId);
   } catch (err) {
     await session.abortTransaction();
     throw err;
