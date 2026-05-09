@@ -1,4 +1,4 @@
-const { Loan, RepaymentSchedule, Transaction } = require('../models');
+const { Loan, RepaymentSchedule } = require('../models');
 const mongoose = require('mongoose');
 
 /**

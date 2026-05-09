@@ -11,16 +11,19 @@ import CreateLoan from './pages/CreateLoan';
 
 // ✅ Protected route
 import ProtectedRoute from './components/ProtectedRoute';
+import MainLayout from './components/MainLayout';
 
 // Placeholder (keep for future pages)
 function ComingSoon({ page }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="card text-center max-w-sm">
-        <h2 className="mb-2">{page}</h2>
-        <p className="text-sm text-gray-500">Phase 3 — Repayments</p>
+    <MainLayout>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="card text-center max-w-sm">
+          <h2 className="mb-2">{page}</h2>
+          <p className="text-sm text-gray-500">Phase 3 — Repayments</p>
+        </div>
       </div>
-    </div>
+    </MainLayout>
   );
 }
 
@@ -43,7 +46,9 @@ export default function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <MainLayout>
+                  <Dashboard />
+                </MainLayout>
               </ProtectedRoute>
             }
           />
@@ -52,7 +57,9 @@ export default function App() {
             path="/marketplace"
             element={
               <ProtectedRoute>
-                <Marketplace />
+                <MainLayout>
+                  <Marketplace />
+                </MainLayout>
               </ProtectedRoute>
             }
           />
@@ -61,7 +68,9 @@ export default function App() {
             path="/create-loan"
             element={
               <ProtectedRoute>
-                <CreateLoan />
+                <MainLayout>
+                  <CreateLoan />
+                </MainLayout>
               </ProtectedRoute>
             }
           />
@@ -70,7 +79,9 @@ export default function App() {
             path="/repayments"
             element={
               <ProtectedRoute>
-                <Repayments />
+                <MainLayout>
+                  <Repayments />
+                </MainLayout>
               </ProtectedRoute>
             }
           />

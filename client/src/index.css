@@ -4,29 +4,32 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 font-sans;
+    @apply bg-slate-50 text-slate-900 font-sans selection:bg-primary-100 selection:text-primary-900;
   }
-  h1 { @apply text-3xl font-bold; }
-  h2 { @apply text-2xl font-semibold; }
-  h3 { @apply text-xl font-semibold; }
+  h1 { @apply text-2xl font-black tracking-tight; }
+  h2 { @apply text-xl font-bold tracking-tight; }
+  h3 { @apply text-lg font-bold; }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-500 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-6 rounded-2xl shadow-lg shadow-primary-600/20 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-secondary {
-    @apply border border-gray-300 hover:bg-gray-100 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-white border border-slate-200 hover:border-primary-200 hover:bg-primary-50/30 text-slate-700 font-bold py-3 px-6 rounded-2xl transition-all active:scale-95 shadow-sm;
   }
   .input-field {
-    @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+    @apply w-full bg-white border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all;
   }
   .card {
-    @apply bg-white rounded-xl border border-gray-200 p-6 shadow-sm;
+    @apply bg-white rounded-3xl border border-slate-100 p-8 shadow-premium hover:shadow-xl transition-all duration-300;
   }
-  .badge-pending   { @apply text-xs font-medium px-2 py-1 rounded-full bg-yellow-100 text-yellow-800; }
-  .badge-funded    { @apply text-xs font-medium px-2 py-1 rounded-full bg-primary-50 text-primary-500; }
-  .badge-active    { @apply text-xs font-medium px-2 py-1 rounded-full bg-success-50 text-success-800; }
-  .badge-repaid    { @apply text-xs font-medium px-2 py-1 rounded-full bg-gray-100 text-gray-600; }
-  .badge-defaulted { @apply text-xs font-medium px-2 py-1 rounded-full bg-danger-50 text-danger-800; }
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20;
+  }
+  .badge-pending   { @apply text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-amber-50 text-amber-600 border border-amber-100; }
+  .badge-funded    { @apply text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-primary-50 text-primary-600 border border-primary-100; }
+  .badge-active    { @apply text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100; }
+  .badge-repaid    { @apply text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-slate-100 text-slate-600; }
+  .badge-defaulted { @apply text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-rose-50 text-rose-600 border border-rose-100; }
 }

@@ -1,5 +1,5 @@
 const stripe = require('../config/stripe');
-const { Loan, User, Transaction } = require('../models');
+const { Loan, Transaction, RepaymentSchedule } = require('../models');
 const mongoose = require('mongoose');
 const loanService = require('../services/loanService');
 
@@ -130,11 +130,20 @@ async function handleLoanRepayment(paymentIntent) {
       status: 'completed',
     }], { session });
 
-    // Note: In a full implementation, we would also update the RepaymentSchedule status here.
-    // For now, we commit the payout transaction.
+    // 3) Update Repayment Schedule
+    const installmentId = paymentIntent.metadata?.installmentId;
+    if (installmentId) {
+      await RepaymentSchedule.findByIdAndUpdate(installmentId, {
+        status: 'paid',
+        paidAt: new Date()
+      }, { session });
+    }
 
     await session.commitTransaction();
     console.log('✅ Repayment received and transfer sent to lender');
+
+    // 4) Check if loan is fully repaid
+    await loanService.checkLoanCompletion(loanId);
   } catch (err) {
     await session.abortTransaction();
     throw err;

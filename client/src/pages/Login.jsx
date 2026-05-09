@@ -44,48 +44,41 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-black flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden font-sans">
 
-      {/* Background effects */}
-      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+      {/* Decorative Background Elements */}
+      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-primary-100/50 rounded-full mix-blend-multiply filter blur-[120px] opacity-60"></div>
+      <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-indigo-100/50 rounded-full mix-blend-multiply filter blur-[100px] opacity-60"></div>
 
-      <div
-        className="absolute top-[20%] right-[-10%] w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
-        style={{ animationDelay: '2s' }}
-      ></div>
-
-      <div
-        className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"
-        style={{ animationDelay: '4s' }}
-      ></div>
-
-      {/* Heading */}
-      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <h2 className="mt-6 text-center text-4xl font-extrabold text-white tracking-tight">
+      {/* Logo & Heading */}
+      <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center">
+        <h1 className="text-2xl font-black bg-gradient-to-br from-primary-600 to-primary-400 bg-clip-text text-transparent mb-4">
+          P2P Platform
+        </h1>
+        <h2 className="text-2xl font-black text-slate-900 tracking-tight">
           Welcome back
         </h2>
-
-        <p className="mt-2 text-center text-sm text-slate-400">
-          Or{' '}
+        <p className="mt-3 text-slate-500 font-bold text-sm">
+          New user?{' '}
           <Link
             to="/register"
-            className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+            className="text-primary-600 hover:text-primary-700 transition-all underline underline-offset-4"
           >
-            create a new account
+            Create new account
           </Link>
         </p>
       </div>
 
-      {/* Form */}
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="bg-slate-800/50 backdrop-blur-xl py-8 px-4 shadow-2xl sm:rounded-2xl sm:px-10 border border-slate-700/50">
+      {/* Auth Card */}
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+        <div className="bg-white/80 backdrop-blur-xl py-12 px-6 shadow-bold sm:rounded-[3rem] sm:px-12 border border-white">
 
           <form className="space-y-6" onSubmit={handleSubmit}>
 
             {/* Validation Error */}
             {validationError && (
-              <div className="bg-yellow-500/10 border border-yellow-500/50 p-4 rounded-lg">
-                <p className="text-sm text-yellow-300 text-center font-medium">
+              <div className="bg-rose-50 border border-rose-100 p-4 rounded-2xl animate-in slide-in-from-top-2 duration-300">
+                <p className="text-xs text-rose-600 text-center font-black uppercase tracking-widest">
                   {validationError}
                 </p>
               </div>
@@ -93,8 +86,8 @@ export default function Login() {
 
             {/* Backend Error */}
             {error && (
-              <div className="bg-red-500/10 border border-red-500/50 p-4 rounded-lg transition-all duration-300">
-                <p className="text-sm text-red-400 text-center font-medium">
+              <div className="bg-rose-50 border border-rose-100 p-4 rounded-2xl animate-in slide-in-from-top-2 duration-300">
+                <p className="text-xs text-rose-600 text-center font-black uppercase tracking-widest">
                   {error}
                 </p>
               </div>
@@ -102,58 +95,69 @@ export default function Login() {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-slate-300">
-                Email address
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1">
+                Email Address
               </label>
-
-              <div className="mt-1">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setValidationError('');
-                  }}
-                  className="appearance-none block w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg shadow-sm placeholder-slate-500 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                  placeholder="you@example.com"
-                />
-              </div>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setValidationError('');
+                }}
+                className="input-field"
+                placeholder="you@example.com"
+              />
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-slate-300">
-                Password
-              </label>
-
-              <div className="mt-1">
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    setValidationError('');
-                  }}
-                  className="appearance-none block w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg shadow-sm placeholder-slate-500 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                  placeholder="••••••••"
-                />
+              <div className="flex items-center justify-between mb-2 ml-1">
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                  Security Key
+                </label>
+                <button type="button" className="text-[10px] font-black text-primary-600 uppercase tracking-widest hover:underline">
+                  Forgot?
+                </button>
               </div>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setValidationError('');
+                }}
+                className="input-field"
+                placeholder="••••••••"
+              />
             </div>
 
-            {/* Button */}
-            <div>
+            {/* Submit Button */}
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 focus:ring-offset-slate-900 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
+                className="w-full btn-primary py-4 text-base"
               >
-                {loading ? 'Signing in...' : 'Sign in'}
+                {loading ? 'Authenticating...' : 'Sign In'}
               </button>
             </div>
 
           </form>
+          
+          <div className="mt-10 pt-8 border-t border-slate-100">
+            <Link 
+              to="/register" 
+              className="w-full flex items-center justify-center px-4 py-3 border border-slate-200 text-slate-500 hover:text-primary-600 hover:bg-primary-50 hover:border-primary-200 rounded-2xl transition-all text-sm font-bold"
+            >
+              New user? Create Account
+            </Link>
+            <p className="mt-6 text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] text-center">
+              Secured by AES-256 Encryption
+            </p>
+          </div>
         </div>
       </div>
     </div>

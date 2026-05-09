@@ -28,6 +28,8 @@ router.get('/my/all', loanController.getMyLoans);
 // Borrower actions
 router.post('/', authMiddleware.restrictTo('borrower'), loanController.createLoan);
 router.patch('/:loanId/bids/:bidId', authMiddleware.restrictTo('borrower'), bidController.acceptBid);
+router.get('/:loanId/repayments', loanController.getRepaymentSchedule);
+router.post('/:loanId/repay/:installmentId', authMiddleware.restrictTo('borrower'), loanController.repayLoan);
 
 // Lender actions
 router.post('/:loanId/bids', authMiddleware.restrictTo('lender'), bidController.placeBid);

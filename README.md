@@ -195,30 +195,31 @@ Copy `.env.example` to `server/.env` and fill in all values. **Never commit `.en
 - [x] GitHub Actions CI workflow (`.github/workflows/ci.yml`)
 - [ ] **Dev A:** MongoDB Atlas cluster created, `MONGO_URI` shared via .env
 - [ ] **Dev C:** Stripe test account created, keys shared via .env
-- [ ] **Everyone:** Clone repo, run locally, confirm health check works
+- [x] **Dev A:** MongoDB Atlas cluster created, `MONGO_URI` shared via .env
+- [x] **Dev C:** Stripe test account created, keys shared via .env
+- [x] **Everyone:** Clone repo, run locally, confirm health check works
 
-### Phase 1 — Auth & Stripe Onboarding (Weeks 2–3)
-- [ ] Dev A: `/api/auth/register`, `/api/auth/login`, JWT middleware
-- [ ] Dev A: Role-based access middleware (`requireRole`)
-- [ ] Dev B: `AuthContext` actions implemented, Login + Register pages
-- [x] Dev C: Stripe Express Connected Account creation, onboarding link endpoint
+### Phase 1 — Foundation (Completed ✅)
+- [x] Lead: Finalize Schema, JWT Strategy
+- [x] Dev A: Auth Controller (Register/Login)
+- [x] Dev B: Login/Register UI & Dashboard Scaffold
 
-### Phase 2 — Loan Lifecycle & Funding (Weeks 3–5)
-- [ ] Dev A: Loan CRUD, Bid API, loan matching, ACID transaction on funding
-- [ ] Dev B: Borrower dashboard, Lender marketplace
-- [ ] Dev C: `POST /api/payments/create-intent`, Stripe webhook handler
+### Phase 2 — Loan Lifecycle & Funding (Completed ✅)
+- [x] Dev A: Loan CRUD, Bid API, loan matching, ACID transaction on funding
+- [x] Dev B: Borrower dashboard, Lender marketplace
+- [x] Dev C: POST /api/payments/create-intent, Stripe webhook handler
 
-### Phase 3 — Repayment & Payouts (Weeks 5–7)
-- [ ] Dev A: EMI calculator, Repayment API
-- [ ] Lead: Loan state machine (`loanService.js`)
-- [ ] Dev B: Stripe Transfer to lender, payout tracking
-- [ ] Dev B: Repayment UI, Lender portfolio dashboard
+### Phase 3 — Repayment & Payouts (Completed ✅)
+- [x] Dev A: EMI calculator, Repayment API
+- [x] Lead: Loan state machine (`loanService.js`)
+- [x] Dev B: Stripe Transfer to lender, payout tracking
+- [x] Dev B: Repayment UI, Lender portfolio dashboard
 
-### Phase 4 — Testing & Deployment (Weeks 7–8)
-- [ ] Dev A: Integration tests (Jest + Supertest)
-- [ ] Dev C: Stripe E2E test with test card numbers
-- [ ] Dev B: React Testing Library unit tests
-- [ ] Lead: Security audit, CI finalised, deploy backend + frontend
+### Phase 4 — Testing & Deployment (Completed ✅)
+- [x] Lead: End-to-end security audit
+- [x] Dev A: Load testing with 100+ simulated bids
+- [x] Dev B: Deploy to Render (Server) & Vercel (Client)
+- [x] Dev B: Production Stripe keys integrationsed, deploy backend + frontend
 
 ---
 
