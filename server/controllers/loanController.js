@@ -107,7 +107,10 @@ exports.getRepaymentSchedule = async (req, res) => {
       return res.status(404).json({ error: 'Loan not found' });
     }
 
-    if (loan.borrower.toString() !== req.user.id && loan.lender.toString() !== req.user.id) {
+    const isBorrower = loan.borrower.toString() === req.user.id;
+    const isLender = loan.lender && loan.lender.toString() === req.user.id;
+
+    if (!isBorrower && !isLender) {
       return res.status(403).json({ error: 'Not authorized to view this schedule' });
     }
 

@@ -9,8 +9,8 @@ class LoanService {
    * Generate a repayment schedule for a funded loan
    * @param {string} loanId 
    */
-  async generateRepaymentSchedule(loanId) {
-    const loan = await Loan.findById(loanId);
+  async generateRepaymentSchedule(loanId, session = null) {
+    const loan = await Loan.findById(loanId).session(session);
     if (!loan) throw new Error('Loan not found');
 
     const installments = [];
@@ -35,7 +35,8 @@ class LoanService {
       });
     }
 
-    await RepaymentSchedule.insertMany(installments);
+    const options = session ? { session } : {};
+    await RepaymentSchedule.insertMany(installments, options);
     console.log(`✅ Generated ${loan.termMonths} installments for Loan ${loanId}`);
   }
 
@@ -57,7 +58,7 @@ class LoanService {
       await loan.save({ session });
 
       // 2) Generate schedule
-      await this.generateRepaymentSchedule(loan._id);
+      await this.generateRepaymentSchedule(loan._id, session);
 
       await session.commitTransaction();
     } catch (err) {

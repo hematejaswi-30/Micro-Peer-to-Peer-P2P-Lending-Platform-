@@ -1,12 +1,17 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, useEffect } from 'react';
 import { api } from '../utils/api';
 
 const AuthContext = createContext(null);
 
+const storedToken = typeof window !== 'undefined' ? sessionStorage.getItem('authToken') : null;
+if (storedToken) {
+  api.setToken(storedToken);
+}
+
 const initialState = {
   user: null,
-  token: null,
-  loading: false,
+  token: storedToken,
+  loading: !!storedToken,
   error: null,
 };
 
@@ -24,10 +29,10 @@ function authReducer(state, action) {
       };
 
     case 'AUTH_FAILURE':
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload, token: null, user: null };
 
     case 'LOGOUT':
-      return { ...initialState };
+      return { ...initialState, token: null, loading: false };
 
     case 'CLEAR_ERROR':
       return { ...state, error: null };
@@ -39,6 +44,26 @@ function authReducer(state, action) {
 
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
+
+  // Restore session on mount if token exists
+  useEffect(() => {
+    async function restoreSession() {
+      if (!state.token) return;
+      try {
+        api.setToken(state.token);
+        const data = await api.get('/auth/me');
+        dispatch({
+          type: 'AUTH_SUCCESS',
+          payload: { user: data.user, token: state.token },
+        });
+      } catch {
+        sessionStorage.removeItem('authToken');
+        api.setToken(null);
+        dispatch({ type: 'LOGOUT' });
+      }
+    }
+    restoreSession();
+  }, []);
 
   // ✅ REGISTER
   const register = async (name, email, password, role) => {
@@ -52,7 +77,7 @@ export function AuthProvider({ children }) {
         role,
       });
 
-      // 🔥 set token in axios (memory only)
+      sessionStorage.setItem('authToken', data.token);
       api.setToken(data.token);
 
       dispatch({
@@ -78,7 +103,7 @@ export function AuthProvider({ children }) {
         password,
       });
 
-      // 🔥 attach token to API
+      sessionStorage.setItem('authToken', data.token);
       api.setToken(data.token);
 
       dispatch({
@@ -96,7 +121,8 @@ export function AuthProvider({ children }) {
 
   // ✅ LOGOUT
   const logout = () => {
-    api.setToken(null); // remove token from axios
+    sessionStorage.removeItem('authToken');
+    api.setToken(null);
     dispatch({ type: 'LOGOUT' });
   };
 
