@@ -9,7 +9,18 @@ const app = express();
 
 // ─── Security Middleware ───────────────────────────────────────────────────
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow non-browser requests (like mobile, Postman, curl)
+    if (!origin) return callback(null, true);
+    // Allow Vercel deployments, configured CLIENT_URL, or local development
+    if (origin.includes('vercel.app') || origin === process.env.CLIENT_URL || origin.includes('localhost')) {
+      return callback(null, true);
+    }
+    callback(null, true); // Fallback allow for production
+  },
+  credentials: true
+}));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

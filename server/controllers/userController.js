@@ -26,7 +26,7 @@ exports.register = async (req, res) => {
       name,
       email,
       passwordHash,
-      role: role.toLowerCase(),
+      role: (role || 'borrower').toString().toLowerCase(),
     });
 
     // 3) Send response
